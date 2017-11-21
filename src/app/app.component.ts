@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  isCollapsed = true;
+
+  constructor(){}
+
+  log(msg: string){
+    console.log(msg);
+  }
 }
