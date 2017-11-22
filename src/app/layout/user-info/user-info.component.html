@@ -1,0 +1,36 @@
+<div class="wraper">
+  <div nz-row>
+    <div nz-col [nzMd]="{span:10,offset:2}" [nzXs]="{span:24}">
+      <nz-card>
+        <ng-template #title>
+           个人信息
+        </ng-template>
+        <ng-template #body>
+          <div nz-row [nzType]="'flex'" [nzJustify]="'space-around'" [nzAlign]="'middle'">
+            <div nz-col [nzMd]="6" [nzXs]="24" >
+              <p>姓名:</p>
+              <p>部门:</p>
+              <p>部门主管:</p>
+              <p>剩余带薪年假:</p>
+              <p>总计带薪年假:</p>
+            </div>
+            <div nz-col [nzMd]="6" [nzXs]="24" style="text-align: center;padding: 10px 0">
+              <nz-progress [ngModel]="75" [nzType]="'circle'" [nzFormat]="_formatOne"></nz-progress>
+            </div>
+          </div>
+        </ng-template>
+      </nz-card>
+    </div>
+  </div>
+  <div nz-row>
+    <nz-calendar [nzLocale]="'zh-cn'">
+      <ng-template #dateCell let-day>
+        <nz-badge [nzStatus]="'success'" [nzText]="'Sunday'" *ngIf="(day.date|date:'EEE')==='Sun'"></nz-badge>
+        <nz-badge [nzStatus]="'processing'" [nzText]="'Saturday'" *ngIf="(day.date|date:'EEE')==='Sat'"></nz-badge>
+      </ng-template>
+      <ng-template #monthCell let-month>
+        <nz-badge [nzStatus]="'success'" [nzText]="'This Month is Sep'" *ngIf="month.index==11"></nz-badge>
+      </ng-template>
+    </nz-calendar>
+  </div>
+</div>
