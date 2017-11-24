@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AskLeaveFormComponent} from "../ask-leave-form/ask-leave-form.component";
 
 @Component({
   selector: 'app-ask-leave',
@@ -9,6 +10,7 @@ export class AskLeaveComponent implements OnInit {
 
   isVisible = false;
   isConfirmLoading = false;
+  @ViewChild(AskLeaveFormComponent) formChild: AskLeaveFormComponent;
 
   constructor() { }
 
@@ -20,14 +22,27 @@ export class AskLeaveComponent implements OnInit {
   }
 
   handleOk = (e) => {
+
+    if (!this.formChild.confirmFormForParen()){
+      return;
+    }
     this.isConfirmLoading = true;
-    setTimeout(() => {
+
+    this.formChild.submitFormForParent().subscribe(
+      data => {
+      this.formChild.resetFormForParent();
       this.isVisible = false;
       this.isConfirmLoading = false;
-    }, 3000);
+      console.log(JSON.stringify(data));
+      },
+      err => {
+        console.log('Something went wrong!' + err);
+      }
+    );
   }
 
   handleCancel = (e) => {
+    this.formChild.resetFormForParent();
     this.isVisible = false;
   }
 
