@@ -83,4 +83,14 @@ export class LeaveService implements OnInit{
     return this.http.post("http://localhost:8081/leave/review/doneList", getReviewDoneListInfo, httpOptions);
   }
 
+  public updateReviewLeave(params){
+    let queryString = "";
+    for (const key in params){
+      queryString += key + "=" + params[key] + "&";
+    }
+    queryString = queryString.substr(0, queryString.length - 1);
+    const updateInfo = new HttpParams({fromString : queryString});
+    return this.http.post("http://localhost:8081/leave/review/action", updateInfo, httpOptions);
+  }
+
 }

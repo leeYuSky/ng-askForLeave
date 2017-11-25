@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {LeaveDomain} from "../../../data/leaveDomain";
 import {LeaveService} from "../../../service/leave.service";
 import {LEAVE_LIST} from "../../../data/leaveList";
 import {STATUS_LIST} from "../../../data/statusDomain";
+import {ReviewLeaveFormComponent} from "../review-leave-form/review-leave-form.component";
+import {NzMessageService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-review-leave-todo',
@@ -10,6 +12,8 @@ import {STATUS_LIST} from "../../../data/statusDomain";
   styleUrls: ['./review-leave-todo.component.css']
 })
 export class ReviewLeaveTodoComponent implements OnInit {
+
+  @ViewChild(ReviewLeaveFormComponent) reviewLeaveFormComponent: ReviewLeaveFormComponent;
 
   // 元数据
   leaveList: LeaveDomain[];
@@ -30,7 +34,8 @@ export class ReviewLeaveTodoComponent implements OnInit {
   model_data;
 
 
-  constructor(private leaveService: LeaveService) { }
+  constructor(private leaveService: LeaveService,
+              private _message: NzMessageService) { }
 
   ngOnInit() {
     this.leaveList = LEAVE_LIST;
@@ -70,8 +75,38 @@ export class ReviewLeaveTodoComponent implements OnInit {
    * 面板 确认 (Modal)
    * @param e
    */
-  handleOk = (e) => {
+  handleOk = (e, Id) => {
+    if (!this.reviewLeaveFormComponent.confirmFormForParen()){
+      return;
+    }
+
     this.isConfirmLoading = true;
+
+    this.reviewLeaveFormComponent.submitFormForParent(this.model_data.id).subscribe(
+      data => {
+
+        if ( data['errno'] === 0) {
+          this._message.create("success", `审批成功`);
+          this.isVisible = false;
+          this.isConfirmLoading = false;
+          this.reviewLeaveFormComponent.resetFormForParent();
+          this.refreshData();
+
+        } else {
+          this._message.create("error", `审批失败`);
+          this.isVisible = false;
+          this.isConfirmLoading = false;
+          this.reviewLeaveFormComponent.resetFormForParent();
+        }
+      },
+      err => {
+        this._message.create("error", `审批失败`);
+        this.isVisible = false;
+        this.isConfirmLoading = false;
+        this.reviewLeaveFormComponent.resetFormForParent();
+      }
+    );
+
     setTimeout(() => {
       this.isVisible = false;
       this.isConfirmLoading = false;
@@ -84,6 +119,7 @@ export class ReviewLeaveTodoComponent implements OnInit {
    */
   handleCancel = (e) => {
     this.isVisible = false;
+    this.reviewLeaveFormComponent.resetFormForParent();
   }
 
 }
