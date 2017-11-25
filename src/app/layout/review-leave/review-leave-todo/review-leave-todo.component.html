@@ -59,7 +59,7 @@
     </div>
   </ng-template>
   <ng-template #modalFooter>
-    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event,model_data.id)">
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
       返 回
     </button>
     <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">

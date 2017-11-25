@@ -75,7 +75,7 @@ export class ReviewLeaveTodoComponent implements OnInit {
    * 面板 确认 (Modal)
    * @param e
    */
-  handleOk = (e, Id) => {
+  handleOk = (e) => {
     if (!this.reviewLeaveFormComponent.confirmFormForParen()){
       return;
     }
@@ -107,10 +107,6 @@ export class ReviewLeaveTodoComponent implements OnInit {
       }
     );
 
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isConfirmLoading = false;
-    }, 3000);
   }
 
   /**
