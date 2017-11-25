@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {LeaveService} from "../../service/leave.service";
 
 import {LEAVE_LIST} from "../../data/leaveList";
@@ -6,6 +6,7 @@ import {STATUS_LIST} from "../../data/statusDomain";
 import {LeaveDomain} from "../../data/leaveDomain";
 import {NzModalService} from "ng-zorro-antd";
 import {NzMessageService} from 'ng-zorro-antd';
+import {AskLeaveUpdateFormComponent} from "../ask-leave-update-form/ask-leave-update-form.component";
 
 @Component({
   selector: 'app-ask-leave-draft',
@@ -23,6 +24,8 @@ export class AskLeaveDraftComponent implements OnInit {
   isConfirmLoading = false;
   modal_data;
   json = JSON;
+
+  @ViewChild(AskLeaveUpdateFormComponent) formUpdateChild: AskLeaveUpdateFormComponent;
 
   // 表格变量
   _current = 1;
@@ -72,23 +75,29 @@ export class AskLeaveDraftComponent implements OnInit {
    */
   showConfirm = (data) => {
     let constance = this;
-    this.confirmServ.confirm({
+    let model = this.confirmServ.confirm({
       title  : '警告',
       content: '<b>确认删除该条数据?删除后不可恢复</b>',
       showConfirmLoading: true,
       onOk() {
+        return new Promise((resolve, reject) => {
           constance.leaveService.deleteLeave(data['id']).subscribe(
           data => {
             if (data['errno'] === 0) {
+              resolve();
               constance.nzMessageService.create('success', `删除成功`);
               constance.refreshData();
             } else {
+              resolve();
               constance.nzMessageService.create('error', `删除失败`);
             }
+
           },
           err => {
+            reject();
             constance.nzMessageService.create('error', `删除失败`);
           });
+        });
 
       },
       onCancel() {
@@ -111,11 +120,36 @@ export class AskLeaveDraftComponent implements OnInit {
    * @param e
    */
   handleOk = (e) => {
+    if (!this.formUpdateChild.confirmFormForParen()){
+      return;
+    }
     this.isConfirmLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isConfirmLoading = false;
-    }, 3000);
+
+    this.formUpdateChild.submitFormForParent().subscribe(
+      data => {
+        if (data['errno'] === 0) {
+          this.nzMessageService.create('success', `修改成功`);
+          if (this.formUpdateChild.getStatusForParent() === 1) {
+            this.refreshData();
+          } else {
+
+          }
+
+        } else {
+          this.nzMessageService.create('error', `修改失败`);
+        }
+        this.isVisible = false;
+        this.isConfirmLoading = false;
+
+      },
+      err => {
+        this.nzMessageService.create('error', `修改失败`);
+        this.isVisible = false;
+        this.isConfirmLoading = false;
+      }
+    );
+
+
   }
 
   /**
@@ -124,6 +158,7 @@ export class AskLeaveDraftComponent implements OnInit {
    */
   handleCancel = (e) => {
     this.isVisible = false;
+    this.formUpdateChild.resetFormForParent();
   }
 
 

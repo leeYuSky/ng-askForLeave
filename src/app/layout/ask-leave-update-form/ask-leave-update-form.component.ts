@@ -13,11 +13,13 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
 
   leaveList: LeaveDomain[];
   validateFormUpdate: FormGroup;
-  @Input() currentDate;
+  @Input() currentData;
 
   _startDate = null;
   _endDate = null;
-  _date111 = new Date(2017, 10, 28);
+  _reason = null;
+  _type = null;
+  _status = null;
 
   constructor(private fb: FormBuilder, private leaveService: LeaveService) {
     this.validateFormUpdate = this.fb.group({
@@ -43,11 +45,19 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
    * @param changes
    */
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.currentDate) {
-      console.log("-----" + JSON.stringify(this.currentDate));
-      console.log(this.currentDate.startTime);
-      this._startDate = new Date(this.currentDate.startTime * 1000);
-      this._endDate = new Date(this.currentDate.endTime * 1000);
+    if (this.currentData) {
+      console.log("-----" + JSON.stringify(this.currentData));
+      console.log(this.currentData.startTime);
+      this._startDate = new Date(this.currentData.startTime * 1000);
+      this._endDate = new Date(this.currentData.endTime * 1000);
+      this._reason = this.currentData.reason;
+      this._type = this.currentData.type;
+      this._status = 1;
+      this.getFormControl("selectTypeUpdate").markAsDirty();
+      this.getFormControl("startDateUpdate").markAsDirty();
+      this.getFormControl("endDateUpdate").markAsDirty();
+      this.getFormControl("leaveReasonUpdate").markAsDirty();
+      this.getFormControl("draftDoneUpdate").markAsDirty();
 
     }
   }
@@ -157,9 +167,17 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
    * 重置表单
    */
   resetFormForParent() {
-    this.validateFormUpdate.reset();
-    for (const key in this.validateFormUpdate.controls) {
-      this.validateFormUpdate.controls[ key ].markAsPristine();
+    if (this.currentData) {
+      this._startDate = new Date(this.currentData.startTime * 1000);
+      this._endDate = new Date(this.currentData.endTime * 1000);
+      this._reason = this.currentData.reason;
+      this._type = this.currentData.type;
+      this._status = 1;
+      this.getFormControl("selectTypeUpdate").markAsDirty();
+      this.getFormControl("startDateUpdate").markAsDirty();
+      this.getFormControl("endDateUpdate").markAsDirty();
+      this.getFormControl("leaveReasonUpdate").markAsDirty();
+      this.getFormControl("draftDoneUpdate").markAsDirty();
     }
   }
 
@@ -188,15 +206,16 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
 
     const params = {
       username : "Jack",
-      startTime : (Date.parse(this.validateFormUpdate.controls[ "startDate" ].value) / 1000),
-      endTime : Date.parse(this.validateFormUpdate.controls[ "endDate" ].value) / 1000,
-      type : this.validateFormUpdate.controls[ "selectType" ].value,
-      reason : this.validateFormUpdate.controls[ "leaveReason" ].value,
-      submitStatus : this.validateFormUpdate.controls[ "draftDone" ].value
+      startTime : (Date.parse(this.validateFormUpdate.controls[ "startDateUpdate" ].value) / 1000),
+      endTime : Date.parse(this.validateFormUpdate.controls[ "endDateUpdate" ].value) / 1000,
+      type : this.validateFormUpdate.controls[ "selectTypeUpdate" ].value,
+      reason : this.validateFormUpdate.controls[ "leaveReasonUpdate" ].value,
+      submitStatus : this.validateFormUpdate.controls[ "draftDoneUpdate" ].value,
+      id : this.currentData.id
     };
 
     // this.leaveService.firstCall();
-    return this.leaveService.addLeave(params);
+    return this.leaveService.updateLeave(params);
 
   }
 
@@ -205,7 +224,7 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
    * @returns {any}
    */
   getStatusForParent = () => {
-    return this.validateFormUpdate.controls[ "draftDone" ].value;
+    return this.validateFormUpdate.controls[ "draftDoneUpdate" ].value;
   }
 
 }

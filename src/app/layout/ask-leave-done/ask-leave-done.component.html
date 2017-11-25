@@ -1,3 +1,94 @@
-<p>
-  ask-leave-done works!
-</p>
+<nz-table #nzTable
+          [nzAjaxData]="_dataSet"
+          [nzShowSizeChanger]="true"
+          [nzLoading]="_loading"
+          [nzTotal]="_total"
+          [(nzPageIndex)]="_current"
+          (nzPageIndexChange)="refreshData()"
+          [(nzPageSize)]="_pageSize"
+          (nzPageSizeChange)="refreshData(true)">
+  <thead nz-thead>
+  <tr>
+    <th nz-th><span>申请时间</span></th>
+    <th nz-th><span>假期类型</span></th>
+    <th nz-th><span>申请人</span></th>
+    <th nz-th><span>部门</span></th>
+    <th nz-th><span>开始时间</span></th>
+    <th nz-th><span>结束时间</span></th>
+    <th nz-th><span>审核人</span></th>
+    <th nz-th><span>原因</span></th>
+    <th nz-th><span>当前状态</span></th>
+    <th nz-th><span>审核意见</span></th>
+    <th nz-th><span>操作</span></th>
+  </tr>
+  </thead>
+  <tbody nz-tbody>
+  <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+    <td nz-td>{{data.applyTime * 1000 | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+    <td nz-td>{{leaveList[data.type-1].name}}</td>
+    <td nz-td>{{data.applyUserName}}</td>
+    <td nz-td>{{data.department}}</td>
+    <td nz-td>{{data.startTime * 1000 | date:'yyyy/MM/dd'}}</td>
+    <td nz-td>{{data.endTime * 1000 | date:'yyyy/MM/dd'}}</td>
+    <td nz-td>{{data.reviewer}}</td>
+    <td nz-td>{{data.reason}}</td>
+    <td nz-td>
+      <nz-tag *ngIf="(data.status) === 2" [nzColor]="'blue'">{{statusList[data.status-1]}}</nz-tag>
+      <nz-tag *ngIf="(data.status) === 3" [nzColor]="'green'">{{statusList[data.status-1]}}</nz-tag>
+      <nz-tag *ngIf="(data.status) === 4" [nzColor]="'red'">{{statusList[data.status-1]}}</nz-tag>
+    </td>
+    <td nz-td>
+      <p *ngIf="data.reviewReason">{{data.reviewReason}}</p>
+      <p *ngIf="!data.reviewReason">等待审核</p>
+    </td>
+    <td>
+      <button nz-button [nzType]="'default'"  [nzShape]="'circle'" (click)="showModal(data)" >
+        <i class="anticon anticon-info-circle-o"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'申请详情'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzConfirmLoading]="isConfirmLoading">
+  <ng-template #modalContent>
+    <!--{{json.stringify(model_data)}}-->
+    <div *ngIf="model_data && model_data.status === 2">
+      <nz-timeline>
+        <nz-timeline-item [nzColor]="'green'">创建时间: {{model_data.applyTime*1000 | date:"yyyy/MM/dd HH:mm:ss"}}</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">以提交审核</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'blue'">
+          <ng-template #custom>
+            <i class="anticon anticon-clock-circle-o" style="font-size: 16px;"></i>
+          </ng-template>
+          请等待主管审核
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+    <div *ngIf="model_data && model_data.status === 3">
+      <nz-timeline>
+        <nz-timeline-item [nzColor]="'green'">创建时间: {{model_data.applyTime*1000 | date:"yyyy/MM/dd HH:mm:ss"}}</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">以提交审核</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">审核时间: {{model_data.reviewTime*1000 | date:"yyyy/MM/dd HH:mm:ss"}}</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">
+          <ng-template #custom>
+            <i class="anticon anticon-check-circle-o" style="font-size: 16px;"></i>
+          </ng-template>
+          审核通过
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+    <div *ngIf="model_data && model_data.status === 4">
+      <nz-timeline>
+        <nz-timeline-item [nzColor]="'green'">创建时间: {{model_data.applyTime*1000 | date:"yyyy/MM/dd HH:mm:ss"}}</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">以提交审核</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'green'">审核时间: {{model_data.reviewTime*1000 | date:"yyyy/MM/dd HH:mm:ss"}}</nz-timeline-item>
+        <nz-timeline-item [nzColor]="'red'">
+          <ng-template #custom>
+            <i class="anticon anticon-close-circle-o" style="font-size: 16px;"></i>
+          </ng-template>
+          审核未通过
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+  </ng-template>
+</nz-modal>

@@ -41,12 +41,30 @@ export class LeaveService implements OnInit{
     return this.http.post('http://localhost:8081/leave/apply/delete', deleteInfo, httpOptions);
   }
 
+  public updateLeave(params){
+    let queryString = "";
+    for (const key in params){
+      queryString += key + "=" + params[key] + "&";
+    }
+    queryString = queryString.substr(0, queryString.length - 1);
+    const updateInfo = new HttpParams({fromString : queryString});
+    return this.http.post("http://localhost:8081/leave/apply/modify", updateInfo, httpOptions);
+  }
+
   public getLeaveDraft(username, pageIndex = 1, pageSize = 10){
     const getLeaveDraftInfo = new HttpParams()
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
     return this.http.post("http://localhost:8081/leave/apply/draftList", getLeaveDraftInfo, httpOptions);
+  }
+
+  public getLeaveDone(username, pageIndex = 1, pageSize = 10){
+    const getLeaveDoneInfo = new HttpParams()
+      .set("username", username)
+      .set("page", pageIndex.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.post("http://localhost:8081/leave/apply/publishList", getLeaveDoneInfo, httpOptions);
   }
 
 }
