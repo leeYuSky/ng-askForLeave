@@ -14,6 +14,7 @@ import { AskLeaveDraftComponent } from './layout/ask-leave-draft/ask-leave-draft
 import { AskLeaveDoneComponent } from './layout/ask-leave-done/ask-leave-done.component';
 import { AskLeaveFormComponent } from './layout/ask-leave-form/ask-leave-form.component';
 import {LeaveService} from "./service/leave.service";
+import { AskLeaveUpdateFormComponent } from './layout/ask-leave-update-form/ask-leave-update-form.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {LeaveService} from "./service/leave.service";
     AskLeaveDraftComponent,
     AskLeaveDoneComponent,
     AskLeaveFormComponent,
+    AskLeaveUpdateFormComponent,
   ],
   imports: [
     BrowserModule,

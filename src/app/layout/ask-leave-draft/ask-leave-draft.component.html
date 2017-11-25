@@ -1,13 +1,3 @@
-<!--<th nz-th><span>申请时间</span></th>-->
-<!--<th nz-th><span>假期类型</span></th>-->
-<!--<th nz-th><span>申请人</span></th>-->
-<!--<th nz-th><span>部门</span></th>-->
-<!--<th nz-th><span>开始时间</span></th>-->
-<!--<th nz-th><span>结束时间</span></th>-->
-<!--<th nz-th><span>审核人</span></th>-->
-<!--<th nz-th><span>原因</span></th>-->
-<!--<th nz-th><span>当前状态</span></th>-->
-<!--<th nz-th><span>操作</span></th>-->
 <nz-table #nzTable
           [nzAjaxData]="_dataSet"
           [nzShowSizeChanger]="true"
@@ -56,5 +46,6 @@
 <nz-modal [nzVisible]="isVisible" [nzTitle]="'对话框标题'" [nzContent]="modalConten" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzConfirmLoading]="isConfirmLoading">
   <ng-template #modalConten>
     <p>{{json.stringify(modal_data)}}</p>
+    <app-ask-leave-update-form [currentDate]="modal_data"></app-ask-leave-update-form>
   </ng-template>
 </nz-modal>

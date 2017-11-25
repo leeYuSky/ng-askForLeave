@@ -1,13 +1,6 @@
 <div nz-row>
   <div nz-col [nzMd]="{ span: 22, offset: 1 }">
     <nz-tabset [nzTabBarExtraTemplate]="tabBarExtraContent">
-      <!--<nz-tab *ngFor="let tab of tabs">-->
-        <!--<ng-template #nzTabHeading>-->
-          <!--<i [ngClass]="tab.icon"></i>-->
-          <!--{{tab.name}}-->
-        <!--</ng-template>-->
-        <!--{{tab.component}}-->
-      <!--</nz-tab>-->
       <nz-tab>
         <ng-template #nzTabHeading>
           <i [ngClass]="'anticon anticon-delete'"></i>
