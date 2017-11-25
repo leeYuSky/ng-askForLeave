@@ -1,0 +1,83 @@
+<form nz-form  [formGroup]="validateFormUpdate" >
+  <!--<form nz-form  [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)" >-->
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col>
+      <label nz-form-item-required>请假类型</label>
+    </div>
+    <div nz-form-control nz-col [nzValidateStatus]="getFormControl('selectTypeUpdateUpdate')">
+      <nz-select [nzPlaceHolder]="'请选择一种病假'" #selectTypeUpdate formControlName="selectTypeUpdate" [nzSize]="'large'" >
+        <nz-option *ngFor="let leave of leaveList" [nzLabel]="leave.name" [nzValue]="leave.type"></nz-option>
+      </nz-select>
+      <div nz-form-explain *ngIf="getFormControl('selectTypeUpdate').dirty&&getFormControl('selectTypeUpdate').hasError('required')">请选择请假类型</div>
+      <div nz-form-explain *ngIf="getFormControl('selectTypeUpdate').dirty&&getFormControl('selectTypeUpdate').pending">Validating...</div>
+      <div nz-form-explain *ngIf="getFormControl('selectTypeUpdate').dirty&&getFormControl('selectTypeUpdate').valid">
+        <p style="line-height: 250%">{{getLeaveContent(selectTypeUpdate.nzValue)}}</p>
+        <!--validateForm.get('selectTypeUpdate').value-->
+      </div>
+    </div>
+  </div>
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="24">
+      <label nz-form-item-required>假期范围</label>
+    </div>
+    <div nz-form-control>
+      <div nz-form-control nz-col [nzSpan]="8" [nzValidateStatus]="getFormControl('startDateUpdateUpdate')">
+        <nz-datepicker style="width: 100%;" formControlName="startDateUpdate" (ngModelChange)="_startDate=$event;_startValueChange()" [(ngModel)]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzSize]="'large'" [nzPlaceHolder]="'起始时间'"></nz-datepicker>
+        <div nz-form-explain *ngIf="getFormControl('startDateUpdate').dirty&&getFormControl('startDateUpdate').hasError('required')">请选择开始时间</div>
+        <div nz-form-explain *ngIf="getFormControl('startDateUpdate').dirty&&getFormControl('startDateUpdate').pending">Validating...</div>
+        <!--<div nz-form-explain *ngIf="getFormControl('startDateUpdate').dirty&&getFormControl('startDateUpdate').valid">{{validateForm.get("startDateUpdate").value | date}}</div>-->
+      </div>
+
+      <div nz-col [nzSpan]="1">
+        <p nz-form-split>-</p>
+      </div>
+
+      <div nz-form-control nz-col [nzSpan]="8" [nzValidateStatus]="getFormControl('endDateUpdateUpdate')">
+        <nz-datepicker style="width: 100%;" formControlName="endDateUpdate" (ngModelChange)="_endDate=$event;_endValueChange()" [(ngModel)]="_endDate" [nzDisabledDate]="_disabledEndDate"  [nzSize]="'large'" [nzPlaceHolder]="'结束时间'"></nz-datepicker>
+        <div nz-form-explain *ngIf="getFormControl('endDateUpdate').dirty&&getFormControl('endDateUpdate').hasError('required')">请选择结束时间</div>
+        <div nz-form-explain *ngIf="getFormControl('endDateUpdate').dirty&&getFormControl('endDateUpdate').pending">Validating...</div>
+        <!--<div nz-form-explain *ngIf="getFormControl('endDateUpdate').dirty&&getFormControl('endDateUpdate').valid">{{validateForm.get("endDateUpdate").value | date}}</div>-->
+      </div>
+      <div nz-col [nzSpan]="24">
+        <div nz-form-explain *ngIf="getFormControl('endDateUpdate').valid&&getFormControl('startDateUpdate').valid">
+          请假天数: {{ getWorkDay(validateFormUpdate.get("startDateUpdate").value,validateFormUpdate.get("endDateUpdate").value)}}天
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col >
+      <label nz-form-item-required>请假原因</label>
+    </div>
+    <div nz-col  nz-form-control [nzValidateStatus]="getFormControl('leaveReasonUpdateUpdate')">
+      <nz-input formControlName="leaveReasonUpdate" [nzType]="'text'" [nzPlaceHolder]="'请输入请假原因'" [nzSize]="'large'">
+      </nz-input>
+      <div nz-form-explain *ngIf="getFormControl('leaveReasonUpdate').dirty&&getFormControl('leaveReasonUpdate').hasError('required')">请填写请假原因</div>
+      <div nz-form-explain *ngIf="getFormControl('leaveReasonUpdate').dirty&&getFormControl('leaveReasonUpdate').pending">Validating...</div>
+    </div>
+  </div>
+
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="24">
+      <label nz-form-item-required>提交至</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14" [nzValidateStatus]="getFormControl('draftDoneUpdateUpdate')">
+      <nz-radio-group formControlName="draftDoneUpdate">
+        <label nz-radio [nzValue]="1">
+          <span>草稿箱</span>
+        </label>
+        <label nz-radio [nzValue]="2">
+          <span>提交审核</span>
+        </label>
+      </nz-radio-group>
+      <div nz-form-explain *ngIf="getFormControl('draftDoneUpdate').dirty&&getFormControl('draftDoneUpdate').hasError('required')">请选择提交至草稿箱或者审核</div>
+      <div nz-form-explain *ngIf="getFormControl('draftDoneUpdate').dirty&&getFormControl('draftDoneUpdate').pending">Validating...</div>
+    </div>
+  </div>
+
+</form>
