@@ -67,4 +67,20 @@ export class LeaveService implements OnInit{
     return this.http.post("http://localhost:8081/leave/apply/publishList", getLeaveDoneInfo, httpOptions);
   }
 
+  public getReviewTodoList(username, pageIndex = 1, pageSize = 10){
+    const getReviewTodoListInfo = new HttpParams()
+      .set("username", username)
+      .set("page", pageIndex.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.post("http://localhost:8081/leave/review/todoList", getReviewTodoListInfo, httpOptions);
+  }
+
+  public getReviewDoneList(username, pageIndex = 1, pageSize = 10){
+    const getReviewDoneListInfo = new HttpParams()
+      .set("username", username)
+      .set("page", pageIndex.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.post("http://localhost:8081/leave/review/doneList", getReviewDoneListInfo, httpOptions);
+  }
+
 }

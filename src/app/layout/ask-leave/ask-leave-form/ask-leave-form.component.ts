@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import * as moment from 'moment';
 
-import {LEAVE_LIST} from "../../data/leaveList";
-import {LeaveDomain} from "../../data/leaveDomain";
+import {LEAVE_LIST} from "../../../data/leaveList";
+import {LeaveDomain} from "../../../data/leaveDomain";
 
-import {LeaveService} from "../../service/leave.service";
+import {LeaveService} from "../../../service/leave.service";
 
 @Component({
   selector: 'app-ask-leave-form',

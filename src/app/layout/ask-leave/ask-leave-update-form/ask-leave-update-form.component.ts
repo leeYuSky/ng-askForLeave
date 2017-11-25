@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {LeaveDomain} from "../../data/leaveDomain";
+import {LeaveDomain} from "../../../data/leaveDomain";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LeaveService} from "../../service/leave.service";
-import {LEAVE_LIST} from "../../data/leaveList";
+import {LeaveService} from "../../../service/leave.service";
+import {LEAVE_LIST} from "../../../data/leaveList";
 
 @Component({
   selector: 'app-ask-leave-update-form',
@@ -46,8 +46,8 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges): void {
     if (this.currentData) {
-      console.log("-----" + JSON.stringify(this.currentData));
-      console.log(this.currentData.startTime);
+      // console.log("-----" + JSON.stringify(this.currentData));
+      // console.log(this.currentData.startTime);
       this._startDate = new Date(this.currentData.startTime * 1000);
       this._endDate = new Date(this.currentData.endTime * 1000);
       this._reason = this.currentData.reason;

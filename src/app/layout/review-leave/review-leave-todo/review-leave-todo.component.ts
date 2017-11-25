@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {LeaveService} from "../../service/leave.service";
-
-import {LEAVE_LIST} from "../../data/leaveList";
-import {LeaveDomain} from "../../data/leaveDomain";
-import {STATUS_LIST} from "../../data/statusDomain";
+import {LeaveDomain} from "../../../data/leaveDomain";
+import {LeaveService} from "../../../service/leave.service";
+import {LEAVE_LIST} from "../../../data/leaveList";
+import {STATUS_LIST} from "../../../data/statusDomain";
 
 @Component({
-  selector: 'app-ask-leave-done',
-  templateUrl: './ask-leave-done.component.html',
-  styleUrls: ['./ask-leave-done.component.css']
+  selector: 'app-review-leave-todo',
+  templateUrl: './review-leave-todo.component.html',
+  styleUrls: ['./review-leave-todo.component.css']
 })
-export class AskLeaveDoneComponent implements OnInit {
+export class ReviewLeaveTodoComponent implements OnInit {
 
   // 元数据
   leaveList: LeaveDomain[];
@@ -26,9 +25,9 @@ export class AskLeaveDoneComponent implements OnInit {
   // 提示框变量
   isVisible = false;
   isConfirmLoading = false;
-  model_data;
 
   json = JSON;
+  model_data;
 
 
   constructor(private leaveService: LeaveService) { }
@@ -38,7 +37,6 @@ export class AskLeaveDoneComponent implements OnInit {
     this.statusList = STATUS_LIST;
     this.refreshData();
   }
-
 
   /**
    * 刷新表格数据
@@ -52,7 +50,7 @@ export class AskLeaveDoneComponent implements OnInit {
 
     this.leaveService.firstCall().subscribe(data1 => {
     });
-    this.leaveService.getLeaveDone("Jack", this._current, this._pageSize).subscribe((data: any) => {
+    this.leaveService.getReviewTodoList("Jack", this._current, this._pageSize).subscribe((data: any) => {
       this._loading = false;
       this._total = data.data.total;
       this._dataSet = data.data.list;
@@ -73,8 +71,11 @@ export class AskLeaveDoneComponent implements OnInit {
    * @param e
    */
   handleOk = (e) => {
-    // this.isConfirmLoading = true;
-    this.isVisible = false;
+    this.isConfirmLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isConfirmLoading = false;
+    }, 3000);
   }
 
   /**
@@ -84,4 +85,5 @@ export class AskLeaveDoneComponent implements OnInit {
   handleCancel = (e) => {
     this.isVisible = false;
   }
+
 }

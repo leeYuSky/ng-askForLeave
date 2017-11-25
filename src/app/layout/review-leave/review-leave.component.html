@@ -1,0 +1,21 @@
+<div nz-row>
+  <div nz-col [nzMd]="{ span: 22, offset: 1 }">
+    <nz-tabset>
+      <nz-tab>
+        <ng-template #nzTabHeading>
+          <i class="anticon anticon-solution"></i>
+          未审核
+        </ng-template>
+        <app-review-leave-todo></app-review-leave-todo>
+      </nz-tab>
+      <nz-tab>
+        <ng-template #nzTabHeading>
+          <i [ngClass]="'anticon anticon-save'"></i>
+          已审核
+        </ng-template>
+        <app-review-leave-done></app-review-leave-done>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
+

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {HelpComponent} from "../layout/help/help.component";
 import {UserInfoComponent} from "../layout/user-info/user-info.component";
 import {AskLeaveComponent} from "../layout/ask-leave/ask-leave.component";
+import {ReviewLeaveComponent} from "../layout/review-leave/review-leave.component";
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'help',  component: HelpComponent },
   { path: 'info',  component: UserInfoComponent },
   { path: 'leave',  component: AskLeaveComponent },
+  { path: 'review',  component: ReviewLeaveComponent },
 ];
 
 @NgModule({

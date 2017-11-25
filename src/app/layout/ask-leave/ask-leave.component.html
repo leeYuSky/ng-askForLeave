@@ -1,6 +1,6 @@
 <div nz-row>
   <div nz-col [nzMd]="{ span: 22, offset: 1 }">
-    <nz-tabset [nzTabBarExtraTemplate]="tabBarExtraContent">
+    <nz-tabset [nzTabBarExtraTemplate]="tabBarExtraContent" (nzSelectedIndexChange)="changeTab($event)">
       <nz-tab>
         <ng-template #nzTabHeading>
           <i [ngClass]="'anticon anticon-delete'"></i>

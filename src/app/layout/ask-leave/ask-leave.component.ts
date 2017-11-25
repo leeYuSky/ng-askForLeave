@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AskLeaveFormComponent} from "../ask-leave-form/ask-leave-form.component";
-import {AskLeaveDraftComponent} from "../ask-leave-draft/ask-leave-draft.component";
+import {AskLeaveFormComponent} from "./ask-leave-form/ask-leave-form.component";
+import {AskLeaveDraftComponent} from "./ask-leave-draft/ask-leave-draft.component";
 import {NzMessageService} from "ng-zorro-antd";
-import {AskLeaveDoneComponent} from "../ask-leave-done/ask-leave-done.component";
+import {AskLeaveDoneComponent} from "./ask-leave-done/ask-leave-done.component";
 
 @Component({
   selector: 'app-ask-leave',
@@ -77,6 +77,18 @@ export class AskLeaveComponent implements OnInit {
   handleCancel = (e) => {
     this.formChild.resetFormForParent();
     this.isVisible = false;
+  }
+
+  /**
+   * tab切换时重新拉取数据
+   * @param index
+   */
+  changeTab(index){
+    if (index === 0){
+      this.dratfChild.refreshData();
+    } else if (index === 1){
+      this.doneChild.refreshData();
+    }
   }
 
 

@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {LeaveService} from "../../service/leave.service";
+import {LeaveService} from "../../../service/leave.service";
 
-import {LEAVE_LIST} from "../../data/leaveList";
-import {STATUS_LIST} from "../../data/statusDomain";
-import {LeaveDomain} from "../../data/leaveDomain";
+import {LEAVE_LIST} from "../../../data/leaveList";
+import {STATUS_LIST} from "../../../data/statusDomain";
+import {LeaveDomain} from "../../../data/leaveDomain";
 import {NzModalService} from "ng-zorro-antd";
 import {NzMessageService} from 'ng-zorro-antd';
 import {AskLeaveUpdateFormComponent} from "../ask-leave-update-form/ask-leave-update-form.component";
@@ -132,7 +132,7 @@ export class AskLeaveDraftComponent implements OnInit {
           if (this.formUpdateChild.getStatusForParent() === 1) {
             this.refreshData();
           } else {
-
+            this.refreshData();
           }
 
         } else {

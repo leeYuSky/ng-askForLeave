@@ -1,0 +1,38 @@
+<form nz-form  [formGroup]="validateForm" >
+  <!--<form nz-form  [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)" >-->
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="24">
+      <label nz-form-item-required>审核结果</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14" [nzValidateStatus]="getFormControl('reviewResult')">
+      <nz-radio-group formControlName="reviewResult">
+        <label nz-radio [nzValue]="1">
+          <span>通过</span>
+        </label>
+        <label nz-radio [nzValue]="2">
+          <span>驳回</span>
+        </label>
+      </nz-radio-group>
+      <div nz-form-explain *ngIf="getFormControl('reviewResult').dirty&&getFormControl('reviewResult').hasError('required')">请选择提交至草稿箱或者审核</div>
+      <div nz-form-explain *ngIf="getFormControl('reviewResult').dirty&&getFormControl('reviewResult').pending">Validating...</div>
+    </div>
+  </div>
+
+
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col >
+      <label nz-form-item-required>审核意见</label>
+    </div>
+    <div nz-col  nz-form-control [nzValidateStatus]="getFormControl('reviewReason')">
+      <nz-input formControlName="reviewReason" [nzType]="'text'" [nzPlaceHolder]="'请输入请假原因'" [nzSize]="'large'">
+      </nz-input>
+      <div nz-form-explain *ngIf="getFormControl('reviewReason').dirty&&getFormControl('reviewReason').hasError('required')">请填写请假原因</div>
+      <div nz-form-explain *ngIf="getFormControl('reviewReason').dirty&&getFormControl('reviewReason').pending">Validating...</div>
+    </div>
+  </div>
+
+
+
+</form>
