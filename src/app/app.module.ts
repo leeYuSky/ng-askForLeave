@@ -19,6 +19,8 @@ import { ReviewLeaveComponent } from './layout/review-leave/review-leave.compone
 import { ReviewLeaveTodoComponent } from './layout/review-leave/review-leave-todo/review-leave-todo.component';
 import { ReviewLeaveDoneComponent } from './layout/review-leave/review-leave-done/review-leave-done.component';
 import { ReviewLeaveFormComponent } from './layout/review-leave/review-leave-form/review-leave-form.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import {CheckUserService} from "./service/check-user.service";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { ReviewLeaveFormComponent } from './layout/review-leave/review-leave-for
     ReviewLeaveTodoComponent,
     ReviewLeaveDoneComponent,
     ReviewLeaveFormComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { ReviewLeaveFormComponent } from './layout/review-leave/review-leave-for
     ReactiveFormsModule
   ],
   providers: [
-    LeaveService
+    LeaveService,
+    CheckUserService
   ],
   bootstrap: [AppComponent]
 })

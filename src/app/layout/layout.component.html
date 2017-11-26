@@ -1,13 +1,13 @@
 <nz-layout style="height:100%;">
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="logo" style="text-align: center">
-      <a routerLink="/info"><img src="../assets/zorro.svg" style="width: 32px"></a>
+      <a [routerLink]="['info']"><img src="../assets/zorro.svg" style="width: 32px"></a>
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
       <li nz-submenu>
         <span title><i class="anticon anticon-edit"></i><span class="nav-text">请假申请</span></span>
         <ul>
-          <li nz-menu-item ><a routerLink="leave">请假列表</a></li>
+          <li nz-menu-item ><a [routerLink]="['leave']">请假列表</a></li>
         </ul>
       </li>
       <li nz-submenu>
@@ -19,13 +19,13 @@
       <li nz-submenu>
         <span title><i class="anticon anticon-inbox"></i><span class="nav-text">审核管理</span></span>
         <ul>
-          <li nz-menu-item><a routerLink="review">审核列表</a></li>
+          <li nz-menu-item><a [routerLink]="['review']">审核列表</a></li>
         </ul>
       </li>
       <li nz-submenu>
         <span title><i class="anticon anticon-question-circle-o"></i><span class="nav-text">帮助信息</span></span>
         <ul>
-          <li nz-menu-item><a routerLink="/help">帮助信息</a></li>
+          <li nz-menu-item><a routerLink="help">帮助信息</a></li>
         </ul>
       </li>
       <!--<li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">加班申请</span></span></li>-->
@@ -42,7 +42,7 @@
           </div>
         </div>
         <ul nz-menu>
-          <li nz-menu-item (click)="log('1st menu item')"><a routerLink="/info"><i class="anticon anticon-user" style="margin-right: 5px"></i>个人信息</a></li>
+          <li nz-menu-item (click)="log('1st menu item')"><a [routerLink]="['info']"><i class="anticon anticon-user" style="margin-right: 5px"></i>个人信息</a></li>
           <li nz-menu-item (click)="log('2nd menu item')"><i class="anticon anticon-logout" style="margin-right: 5px"></i>注销</li>
         </ul>
       </nz-dropdown>

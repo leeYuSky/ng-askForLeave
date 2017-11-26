@@ -5,14 +5,24 @@ import {HelpComponent} from "../layout/help/help.component";
 import {UserInfoComponent} from "../layout/user-info/user-info.component";
 import {AskLeaveComponent} from "../layout/ask-leave/ask-leave.component";
 import {ReviewLeaveComponent} from "../layout/review-leave/review-leave.component";
+import {LayoutComponent} from "../layout/layout.component";
+import {LoginPageComponent} from "../login-page/login-page.component";
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/info', pathMatch: 'full' },
-  { path: 'help',  component: HelpComponent },
-  { path: 'info',  component: UserInfoComponent },
-  { path: 'leave',  component: AskLeaveComponent },
-  { path: 'review',  component: ReviewLeaveComponent },
+  {
+    path: 'main',
+    component : LayoutComponent,
+    children : [
+      {path: '', redirectTo: 'info', pathMatch: 'full'},
+      {path: 'help', component: HelpComponent},
+      {path: 'info', component: UserInfoComponent},
+      {path: 'leave', component: AskLeaveComponent},
+      {path: 'review', component: ReviewLeaveComponent},
+    ]
+  },
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: 'login', component : LoginPageComponent},
 ];
 
 @NgModule({

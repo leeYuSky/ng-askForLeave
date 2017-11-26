@@ -8,14 +8,14 @@
         <ng-template #body>
           <div nz-row [nzType]="'flex'" [nzJustify]="'space-around'" [nzAlign]="'middle'">
             <div nz-col [nzMd]="6" [nzXs]="24" >
-              <p>姓名:</p>
-              <p>部门:</p>
-              <p>部门主管:</p>
-              <p>剩余带薪年假:</p>
-              <p>总计带薪年假:</p>
+              <p>姓名: {{current_name}}</p>
+              <p>部门: {{current_department}}</p>
+              <p>部门主管: {{current_manager}}</p>
+              <p>剩余带薪年假: {{current_annualLeft}}</p>
+              <p>总计带薪年假: {{current_annualTotal}}</p>
             </div>
             <div nz-col [nzMd]="6" [nzXs]="24" style="text-align: center;padding: 10px 0">
-              <nz-progress [ngModel]="75" [nzType]="'circle'" [nzFormat]="_formatOne"></nz-progress>
+              <nz-progress [ngModel]="_annualLeft" [nzType]="'circle'" [nzFormat]="_formatOne"></nz-progress>
             </div>
           </div>
         </ng-template>

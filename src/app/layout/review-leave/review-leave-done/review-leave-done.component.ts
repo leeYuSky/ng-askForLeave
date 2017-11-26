@@ -3,6 +3,7 @@ import {LeaveDomain} from "../../../data/leaveDomain";
 import {LeaveService} from "../../../service/leave.service";
 import {LEAVE_LIST} from "../../../data/leaveList";
 import {STATUS_LIST} from "../../../data/statusDomain";
+import {CheckUserService} from "../../../service/check-user.service";
 
 @Component({
   selector: 'app-review-leave-done',
@@ -20,7 +21,7 @@ export class ReviewLeaveDoneComponent implements OnInit {
   _pageSize = 10;
   _total = 1;
   _dataSet = [];
-  _loading = true;
+  _loading = false;
 
   // 提示框变量
   isVisible = false;
@@ -28,14 +29,18 @@ export class ReviewLeaveDoneComponent implements OnInit {
 
   json = JSON;
   model_data;
+  current_user;
 
-
-  constructor(private leaveService: LeaveService) { }
+  constructor(private leaveService: LeaveService,
+              private checkUserService: CheckUserService) { }
 
   ngOnInit() {
     this.leaveList = LEAVE_LIST;
     this.statusList = STATUS_LIST;
-    this.refreshData();
+    if (this.checkUserService.isLogin) {
+      this.current_user = this.checkUserService.current_user;
+      this.refreshData();
+    }
   }
 
   /**
@@ -43,18 +48,21 @@ export class ReviewLeaveDoneComponent implements OnInit {
    * @param reset
    */
   refreshData(reset = false) {
-    if (reset) {
-      this._current = 1;
-    }
-    this._loading = true;
+    if (this.checkUserService.isLogin) {
 
-    this.leaveService.firstCall().subscribe(data1 => {
-    });
-    this.leaveService.getReviewDoneList("Jack", this._current, this._pageSize).subscribe((data: any) => {
-      this._loading = false;
-      this._total = data.data.total;
-      this._dataSet = data.data.list;
-    });
+      if (reset) {
+        this._current = 1;
+      }
+      this._loading = true;
+
+      this.leaveService.firstCall().subscribe(data1 => {
+      });
+      this.leaveService.getReviewDoneList(this.current_user, this._current, this._pageSize).subscribe((data: any) => {
+        this._loading = false;
+        this._total = data.data.total;
+        this._dataSet = data.data.list;
+      });
+    }
   }
 
   /**

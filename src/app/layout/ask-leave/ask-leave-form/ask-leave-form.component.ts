@@ -6,6 +6,7 @@ import {LEAVE_LIST} from "../../../data/leaveList";
 import {LeaveDomain} from "../../../data/leaveDomain";
 
 import {LeaveService} from "../../../service/leave.service";
+import {CheckUserService} from "../../../service/check-user.service";
 
 @Component({
   selector: 'app-ask-leave-form',
@@ -22,7 +23,8 @@ export class AskLeaveFormComponent implements OnInit {
   _endDate = null;
   _date111 = new Date(2017, 10, 28);
 
-  constructor(private fb: FormBuilder, private leaveService: LeaveService) {
+  constructor(private fb: FormBuilder,
+              private leaveService: LeaveService) {
     this.validateForm = this.fb.group({
       selectType          : [ '', [ Validators.required ]],
       startDate           : [ '' , [ Validators.required ]],
@@ -170,10 +172,10 @@ export class AskLeaveFormComponent implements OnInit {
    * 提交表单数据
    * @returns {Observable<Object>}
    */
-  submitFormForParent = () => {
+  submitFormForParent = (usernmae) => {
 
     const params = {
-      username : "Jack",
+      username : usernmae,
       startTime : (Date.parse(this.validateForm.controls[ "startDate" ].value) / 1000),
       endTime : Date.parse(this.validateForm.controls[ "endDate" ].value) / 1000,
       type : this.validateForm.controls[ "selectType" ].value,

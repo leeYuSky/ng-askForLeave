@@ -7,6 +7,7 @@ import {LeaveDomain} from "../../../data/leaveDomain";
 import {NzModalService} from "ng-zorro-antd";
 import {NzMessageService} from 'ng-zorro-antd';
 import {AskLeaveUpdateFormComponent} from "../ask-leave-update-form/ask-leave-update-form.component";
+import {CheckUserService} from "../../../service/check-user.service";
 
 @Component({
   selector: 'app-ask-leave-draft',
@@ -32,12 +33,15 @@ export class AskLeaveDraftComponent implements OnInit {
   _pageSize = 10;
   _total = 1;
   _dataSet = [];
-  _loading = true;
+  _loading = false;
+
+  current_user;
 
 
   constructor(private leaveService: LeaveService,
               private confirmServ: NzModalService,
-              private  nzMessageService: NzMessageService) {
+              private  nzMessageService: NzMessageService,
+              private checkUserService: CheckUserService) {
   }
 
   /**
@@ -46,7 +50,12 @@ export class AskLeaveDraftComponent implements OnInit {
   ngOnInit() {
     this.leaveList = LEAVE_LIST;
     this.statusList = STATUS_LIST;
-    this.refreshData();
+
+    console.log("AskLeaveDraftComponent 登录了吗?" + this.checkUserService.isLogin);
+    if (this.checkUserService.isLogin) {
+      this.current_user = this.checkUserService.current_user;
+      this.refreshData();
+    }
   }
 
   /**
@@ -54,18 +63,18 @@ export class AskLeaveDraftComponent implements OnInit {
    * @param reset
    */
   refreshData(reset = false) {
-    if (reset) {
-      this._current = 1;
-    }
-    this._loading = true;
+    if (this.checkUserService.isLogin) {
+      if (reset) {
+        this._current = 1;
+      }
+      this._loading = true;
 
-    this.leaveService.firstCall().subscribe(data1 => {
-    });
-    this.leaveService.getLeaveDraft("Jack", this._current, this._pageSize).subscribe((data: any) => {
-      this._loading = false;
-      this._total = data.data.total;
-      this._dataSet = data.data.list;
-    });
+      this.leaveService.getLeaveDraft(this.current_user, this._current, this._pageSize).subscribe((data: any) => {
+        this._loading = false;
+        this._total = data.data.total;
+        this._dataSet = data.data.list;
+      });
+    }
   }
 
 
@@ -80,24 +89,28 @@ export class AskLeaveDraftComponent implements OnInit {
       content: '<b>确认删除该条数据?删除后不可恢复</b>',
       showConfirmLoading: true,
       onOk() {
-        return new Promise((resolve, reject) => {
-          constance.leaveService.deleteLeave(data['id']).subscribe(
-          data => {
-            if (data['errno'] === 0) {
-              resolve();
-              constance.nzMessageService.create('success', `删除成功`);
-              constance.refreshData();
-            } else {
-              resolve();
-              constance.nzMessageService.create('error', `删除失败`);
-            }
+        if (constance.checkUserService.isLogin) {
+          return new Promise((resolve, reject) => {
+            constance.leaveService.deleteLeave(data['id']).subscribe(
+              data => {
+                if (data['errno'] === 0) {
+                  resolve();
+                  constance.nzMessageService.create('success', `删除成功`);
+                  constance.refreshData();
+                } else {
+                  resolve();
+                  constance.nzMessageService.create('error', `删除失败`);
+                }
 
-          },
-          err => {
-            reject();
-            constance.nzMessageService.create('error', `删除失败`);
+              },
+              err => {
+                reject();
+                constance.nzMessageService.create('error', `删除失败`);
+              });
           });
-        });
+        } else {
+          constance.nzMessageService.create('error', `未登录`);
+        }
 
       },
       onCancel() {
@@ -120,34 +133,40 @@ export class AskLeaveDraftComponent implements OnInit {
    * @param e
    */
   handleOk = (e) => {
-    if (!this.formUpdateChild.confirmFormForParen()){
-      return;
-    }
-    this.isConfirmLoading = true;
 
-    this.formUpdateChild.submitFormForParent().subscribe(
-      data => {
-        if (data['errno'] === 0) {
-          this.nzMessageService.create('success', `修改成功`);
-          if (this.formUpdateChild.getStatusForParent() === 1) {
-            this.refreshData();
-          } else {
-            this.refreshData();
-          }
+    if( this.checkUserService.isLogin) {
 
-        } else {
-          this.nzMessageService.create('error', `修改失败`);
-        }
-        this.isVisible = false;
-        this.isConfirmLoading = false;
-
-      },
-      err => {
-        this.nzMessageService.create('error', `修改失败`);
-        this.isVisible = false;
-        this.isConfirmLoading = false;
+      if (!this.formUpdateChild.confirmFormForParen()) {
+        return;
       }
-    );
+      this.isConfirmLoading = true;
+
+      this.formUpdateChild.submitFormForParent(this.current_user).subscribe(
+        data => {
+          if (data['errno'] === 0) {
+            this.nzMessageService.create('success', `修改成功`);
+            if (this.formUpdateChild.getStatusForParent() === 1) {
+              this.refreshData();
+            } else {
+              this.refreshData();
+            }
+
+          } else {
+            this.nzMessageService.create('error', `修改失败`);
+          }
+          this.isVisible = false;
+          this.isConfirmLoading = false;
+
+        },
+        err => {
+          this.nzMessageService.create('error', `修改失败`);
+          this.isVisible = false;
+          this.isConfirmLoading = false;
+        }
+      );
+    } else {
+      this.nzMessageService.create('error', `未登录`);
+    }
 
 
   }

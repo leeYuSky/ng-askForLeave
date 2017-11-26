@@ -25,6 +25,16 @@ export class LeaveService implements OnInit{
     return this.http.post('http://localhost:8081/leave/auth/login', loginInfo, httpOptions);
   }
 
+  public login(username, password){
+    const loginInfo = new HttpParams().set("username", username).set("password", password);
+    return this.http.post('http://localhost:8081/leave/auth/login', loginInfo, httpOptions);
+  }
+
+  public getUserInfo(username){
+    const loginInfo = new HttpParams().set("username", username);
+    return this.http.post('http://localhost:8081/leave/apply/info', loginInfo, httpOptions);
+  }
+
   public addLeave (params){
     let queryString = "";
     for (const key in params){

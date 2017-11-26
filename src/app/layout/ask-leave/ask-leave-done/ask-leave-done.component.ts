@@ -4,6 +4,7 @@ import {LeaveService} from "../../../service/leave.service";
 import {LEAVE_LIST} from "../../../data/leaveList";
 import {LeaveDomain} from "../../../data/leaveDomain";
 import {STATUS_LIST} from "../../../data/statusDomain";
+import {CheckUserService} from "../../../service/check-user.service";
 
 @Component({
   selector: 'app-ask-leave-done',
@@ -21,7 +22,7 @@ export class AskLeaveDoneComponent implements OnInit {
   _pageSize = 10;
   _total = 1;
   _dataSet = [];
-  _loading = true;
+  _loading = false;
 
   // 提示框变量
   isVisible = false;
@@ -29,14 +30,19 @@ export class AskLeaveDoneComponent implements OnInit {
   model_data;
 
   json = JSON;
+  current_user;
 
-
-  constructor(private leaveService: LeaveService) { }
+  constructor(private leaveService: LeaveService,
+              private checkUserService: CheckUserService) { }
 
   ngOnInit() {
     this.leaveList = LEAVE_LIST;
     this.statusList = STATUS_LIST;
-    this.refreshData();
+
+    if (this.checkUserService.isLogin) {
+      this.current_user = this.checkUserService.current_user;
+      this.refreshData();
+    }
   }
 
 
@@ -45,18 +51,17 @@ export class AskLeaveDoneComponent implements OnInit {
    * @param reset
    */
   refreshData(reset = false) {
-    if (reset) {
-      this._current = 1;
+    if (this.checkUserService.isLogin) {
+      if (reset) {
+        this._current = 1;
+      }
+      this._loading = true;
+      this.leaveService.getLeaveDone(this.current_user, this._current, this._pageSize).subscribe((data: any) => {
+        this._loading = false;
+        this._total = data.data.total;
+        this._dataSet = data.data.list;
+      });
     }
-    this._loading = true;
-
-    this.leaveService.firstCall().subscribe(data1 => {
-    });
-    this.leaveService.getLeaveDone("Jack", this._current, this._pageSize).subscribe((data: any) => {
-      this._loading = false;
-      this._total = data.data.total;
-      this._dataSet = data.data.list;
-    });
   }
 
   /**

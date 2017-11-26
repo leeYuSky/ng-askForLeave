@@ -202,10 +202,10 @@ export class AskLeaveUpdateFormComponent implements OnInit, OnChanges {
    * 提交表单数据
    * @returns {Observable<Object>}
    */
-  submitFormForParent = () => {
+  submitFormForParent = (username) => {
 
     const params = {
-      username : "Jack",
+      username : username,
       startTime : (Date.parse(this.validateFormUpdate.controls[ "startDateUpdate" ].value) / 1000),
       endTime : Date.parse(this.validateFormUpdate.controls[ "endDateUpdate" ].value) / 1000,
       type : this.validateFormUpdate.controls[ "selectTypeUpdate" ].value,

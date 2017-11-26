@@ -5,6 +5,7 @@ import {LEAVE_LIST} from "../../../data/leaveList";
 import {STATUS_LIST} from "../../../data/statusDomain";
 import {ReviewLeaveFormComponent} from "../review-leave-form/review-leave-form.component";
 import {NzMessageService} from "ng-zorro-antd";
+import {CheckUserService} from "../../../service/check-user.service";
 
 @Component({
   selector: 'app-review-leave-todo',
@@ -24,7 +25,7 @@ export class ReviewLeaveTodoComponent implements OnInit {
   _pageSize = 10;
   _total = 1;
   _dataSet = [];
-  _loading = true;
+  _loading = false;
 
   // 提示框变量
   isVisible = false;
@@ -32,15 +33,19 @@ export class ReviewLeaveTodoComponent implements OnInit {
 
   json = JSON;
   model_data;
-
+  current_user;
 
   constructor(private leaveService: LeaveService,
-              private _message: NzMessageService) { }
+              private _message: NzMessageService,
+              private checkUserService: CheckUserService) { }
 
   ngOnInit() {
     this.leaveList = LEAVE_LIST;
     this.statusList = STATUS_LIST;
-    this.refreshData();
+    if (this.checkUserService.isLogin) {
+      this.current_user = this.checkUserService.current_user;
+      this.refreshData();
+    }
   }
 
   /**
@@ -48,18 +53,21 @@ export class ReviewLeaveTodoComponent implements OnInit {
    * @param reset
    */
   refreshData(reset = false) {
-    if (reset) {
-      this._current = 1;
-    }
-    this._loading = true;
+    if (this.checkUserService.isLogin) {
 
-    this.leaveService.firstCall().subscribe(data1 => {
-    });
-    this.leaveService.getReviewTodoList("Jack", this._current, this._pageSize).subscribe((data: any) => {
-      this._loading = false;
-      this._total = data.data.total;
-      this._dataSet = data.data.list;
-    });
+      if (reset) {
+        this._current = 1;
+      }
+      this._loading = true;
+
+      this.leaveService.firstCall().subscribe(data1 => {
+      });
+      this.leaveService.getReviewTodoList(this.current_user, this._current, this._pageSize).subscribe((data: any) => {
+        this._loading = false;
+        this._total = data.data.total;
+        this._dataSet = data.data.list;
+      });
+    }
   }
 
   /**
@@ -76,36 +84,40 @@ export class ReviewLeaveTodoComponent implements OnInit {
    * @param e
    */
   handleOk = (e) => {
-    if (!this.reviewLeaveFormComponent.confirmFormForParen()){
-      return;
-    }
+    if (this.checkUserService.isLogin) {
+      if (!this.reviewLeaveFormComponent.confirmFormForParen()) {
+        return;
+      }
 
-    this.isConfirmLoading = true;
+      this.isConfirmLoading = true;
 
-    this.reviewLeaveFormComponent.submitFormForParent(this.model_data.id).subscribe(
-      data => {
+      this.reviewLeaveFormComponent.submitFormForParent(this.model_data.id).subscribe(
+        data => {
 
-        if ( data['errno'] === 0) {
-          this._message.create("success", `审批成功`);
-          this.isVisible = false;
-          this.isConfirmLoading = false;
-          this.reviewLeaveFormComponent.resetFormForParent();
-          this.refreshData();
+          if (data['errno'] === 0) {
+            this._message.create("success", `审批成功`);
+            this.isVisible = false;
+            this.isConfirmLoading = false;
+            this.reviewLeaveFormComponent.resetFormForParent();
+            this.refreshData();
 
-        } else {
+          } else {
+            this._message.create("error", `审批失败`);
+            this.isVisible = false;
+            this.isConfirmLoading = false;
+            this.reviewLeaveFormComponent.resetFormForParent();
+          }
+        },
+        err => {
           this._message.create("error", `审批失败`);
           this.isVisible = false;
           this.isConfirmLoading = false;
           this.reviewLeaveFormComponent.resetFormForParent();
         }
-      },
-      err => {
-        this._message.create("error", `审批失败`);
-        this.isVisible = false;
-        this.isConfirmLoading = false;
-        this.reviewLeaveFormComponent.resetFormForParent();
-      }
-    );
+      );
+    } else {
+      this._message.create("error", `未登录`);
+    }
 
   }
 
