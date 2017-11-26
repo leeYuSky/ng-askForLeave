@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LeaveService} from "../service/leave.service";
 import {UserInfoComponent} from "./user-info/user-info.component";
 
 import {CheckUserService} from "../service/check-user.service";
+import {NzMessageService} from "ng-zorro-antd";
 
 
 @Component({
@@ -16,15 +17,38 @@ export class LayoutComponent implements OnInit {
   isCollapsed = true;
 
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
               private leaveService: LeaveService,
-              private checkUserService: CheckUserService){}
+              private checkUserService: CheckUserService,
+              private nzMessageService: NzMessageService ){}
 
   ngOnInit() {
     console.log("LayoutComponent ngOnInit");
 
-    console.log("登录了吗?" + this.checkUserService.isLogin);
+    // console.log("登录了吗?" + this.checkUserService.isLogin);
 
+  }
+
+  logout(){
+    if (this.checkUserService.isLogin) {
+
+      this.leaveService.logout().subscribe(
+        data => {
+          if (data["errno"] === 0) {
+            this.checkUserService.isLogin = false;
+            this.checkUserService.current_user = null;
+            this.router.navigate(['login']);
+          } else {
+            this.nzMessageService.create("error", "登出失败");
+          }
+        },
+        err => {
+          this.nzMessageService.create("error", "未知错误");
+        }
+      );
+    } else {
+      this.nzMessageService.create("error", "未登录");
+    }
   }
 
   log(msg: string){

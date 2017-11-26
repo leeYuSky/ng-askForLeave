@@ -19,15 +19,16 @@ export class LeaveService implements OnInit{
   ngOnInit(): void {
   }
 
-  public firstCall(){
-    const loginInfo = new HttpParams().set("username", "Jack").set("password", "123456");
-    const a = {username : "Jack", password: "123456"};
-    return this.http.post('http://localhost:8081/leave/auth/login', loginInfo, httpOptions);
-  }
-
   public login(username, password){
     const loginInfo = new HttpParams().set("username", username).set("password", password);
     return this.http.post('http://localhost:8081/leave/auth/login', loginInfo, httpOptions);
+  }
+
+  // 必须添加httpOptions, 否则会导致登出时的http请求不添加 cookie, 造成无法传输sessionId
+  // 造成原因未明
+  public logout(){
+    const logoutInfo = new HttpParams();
+    return this.http.post('http://localhost:8081/leave/auth/logout', logoutInfo, httpOptions);
   }
 
   public getUserInfo(username){

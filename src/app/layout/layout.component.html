@@ -43,7 +43,7 @@
         </div>
         <ul nz-menu>
           <li nz-menu-item (click)="log('1st menu item')"><a [routerLink]="['info']"><i class="anticon anticon-user" style="margin-right: 5px"></i>个人信息</a></li>
-          <li nz-menu-item (click)="log('2nd menu item')"><i class="anticon anticon-logout" style="margin-right: 5px"></i>注销</li>
+          <li nz-menu-item (click)="logout()"><i class="anticon anticon-logout" style="margin-right: 5px"></i>注销</li>
         </ul>
       </nz-dropdown>
     </nz-header>
