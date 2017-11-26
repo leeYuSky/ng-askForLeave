@@ -21,7 +21,6 @@ export class AskLeaveFormComponent implements OnInit {
 
   _startDate = null;
   _endDate = null;
-  _date111 = new Date(2017, 10, 28);
 
   constructor(private fb: FormBuilder,
               private leaveService: LeaveService) {
@@ -172,10 +171,10 @@ export class AskLeaveFormComponent implements OnInit {
    * 提交表单数据
    * @returns {Observable<Object>}
    */
-  submitFormForParent = (usernmae) => {
+  submitFormForParent = (username) => {
 
     const params = {
-      username : usernmae,
+      username : username,
       startTime : (Date.parse(this.validateForm.controls[ "startDate" ].value) / 1000),
       endTime : Date.parse(this.validateForm.controls[ "endDate" ].value) / 1000,
       type : this.validateForm.controls[ "selectType" ].value,

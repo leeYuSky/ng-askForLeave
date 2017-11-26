@@ -77,6 +77,22 @@ export class LeaveService implements OnInit{
     return this.http.post("http://localhost:8081/leave/apply/publishList", getLeaveDoneInfo, httpOptions);
   }
 
+  public getOvertimeDeaft(username, pageIndex = 1, pageSize = 10){
+    const getLeaveDraftInfo = new HttpParams()
+      .set("username", username)
+      .set("page", pageIndex.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.post("http://localhost:8081/leave/apply/overtimeDraftList", getLeaveDraftInfo, httpOptions);
+  }
+
+  public getOvertimeDone(username, pageIndex = 1, pageSize = 10){
+    const getLeaveDraftInfo = new HttpParams()
+      .set("username", username)
+      .set("page", pageIndex.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.post("http://localhost:8081/leave/apply/overtimePublishList", getLeaveDraftInfo, httpOptions);
+  }
+
   public getReviewTodoList(username, pageIndex = 1, pageSize = 10){
     const getReviewTodoListInfo = new HttpParams()
       .set("username", username)

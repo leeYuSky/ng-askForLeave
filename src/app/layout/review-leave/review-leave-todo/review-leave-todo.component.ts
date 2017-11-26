@@ -49,6 +49,19 @@ export class ReviewLeaveTodoComponent implements OnInit {
   }
 
   /**
+   * 判断申请类别, 是 请假 还是 加班
+   * @param type
+   * @returns {any}
+   */
+  getType(type){
+    if (type === 10){
+      return "加班";
+    } else {
+      return this.leaveList[type - 1].name;
+    }
+  }
+
+  /**
    * 刷新表格数据
    * @param reset
    */
@@ -60,8 +73,6 @@ export class ReviewLeaveTodoComponent implements OnInit {
       }
       this._loading = true;
 
-      this.leaveService.firstCall().subscribe(data1 => {
-      });
       this.leaveService.getReviewTodoList(this.current_user, this._current, this._pageSize).subscribe((data: any) => {
         this._loading = false;
         this._total = data.data.total;

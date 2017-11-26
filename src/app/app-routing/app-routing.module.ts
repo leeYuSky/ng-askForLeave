@@ -7,6 +7,7 @@ import {AskLeaveComponent} from "../layout/ask-leave/ask-leave.component";
 import {ReviewLeaveComponent} from "../layout/review-leave/review-leave.component";
 import {LayoutComponent} from "../layout/layout.component";
 import {LoginPageComponent} from "../login-page/login-page.component";
+import {AskOvertimeComponent} from "../layout/ask-overtime/ask-overtime.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
       {path: 'help', component: HelpComponent},
       {path: 'info', component: UserInfoComponent},
       {path: 'leave', component: AskLeaveComponent},
+      {path: 'overtime', component: AskOvertimeComponent},
       {path: 'review', component: ReviewLeaveComponent},
     ]
   },
