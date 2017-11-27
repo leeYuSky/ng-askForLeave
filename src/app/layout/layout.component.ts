@@ -35,8 +35,7 @@ export class LayoutComponent implements OnInit {
       this.leaveService.logout().subscribe(
         data => {
           if (data["errno"] === 0) {
-            this.checkUserService.isLogin = false;
-            this.checkUserService.current_user = null;
+            this.checkUserService.logout();
             this.router.navigate(['login']);
           } else {
             this.nzMessageService.create("error", "登出失败");

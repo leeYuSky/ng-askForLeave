@@ -26,6 +26,8 @@ import { AskOvertimeDraftComponent } from './layout/ask-overtime/ask-overtime-dr
 import { AskOvertimeDoneComponent } from './layout/ask-overtime/ask-overtime-done/ask-overtime-done.component';
 import { AskOvertimeFormComponent } from './layout/ask-overtime/ask-overtime-form/ask-overtime-form.component';
 import { AskOvertimeUpdateFormComponent } from './layout/ask-overtime/ask-overtime-update-form/ask-overtime-update-form.component';
+import { Page404Component } from './page-404/page-404.component';
+import {AuthGuardService} from "./service/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { AskOvertimeUpdateFormComponent } from './layout/ask-overtime/ask-overti
     AskOvertimeDoneComponent,
     AskOvertimeFormComponent,
     AskOvertimeUpdateFormComponent,
+    Page404Component,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { AskOvertimeUpdateFormComponent } from './layout/ask-overtime/ask-overti
   ],
   providers: [
     LeaveService,
-    CheckUserService
+    CheckUserService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

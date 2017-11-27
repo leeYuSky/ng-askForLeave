@@ -8,12 +8,17 @@ import {ReviewLeaveComponent} from "../layout/review-leave/review-leave.componen
 import {LayoutComponent} from "../layout/layout.component";
 import {LoginPageComponent} from "../login-page/login-page.component";
 import {AskOvertimeComponent} from "../layout/ask-overtime/ask-overtime.component";
+import {Page404Component} from "../page-404/page-404.component";
+import { AuthGuardService } from "../service/auth-guard.service";
 
 
 const routes: Routes = [
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: 'login', component : LoginPageComponent},
   {
     path: 'main',
     component : LayoutComponent,
+    canActivate: [AuthGuardService],
     children : [
       {path: '', redirectTo: 'info', pathMatch: 'full'},
       {path: 'help', component: HelpComponent},
@@ -23,8 +28,8 @@ const routes: Routes = [
       {path: 'review', component: ReviewLeaveComponent},
     ]
   },
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'login', component : LoginPageComponent},
+  {path: '**', component : Page404Component},
+
 ];
 
 @NgModule({
