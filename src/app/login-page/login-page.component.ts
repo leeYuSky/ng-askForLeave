@@ -45,11 +45,12 @@ export class LoginPageComponent implements OnInit {
       this.leaveService.login(this.validateForm.controls['username'].value, this.validateForm.controls['password'].value).subscribe(
         data => {
           if ( data['errno'] === 0){
-            let navigationExtras: NavigationExtras = {
-              queryParams: { 'username': data['data']['username'] },
-            };
+            // let navigationExtras: NavigationExtras = {
+            //   queryParams: { 'username': data['data']['username'] },
+            // };
             this.checkUserService.login(data['data']['username']);
-            this.router.navigate(['main'], navigationExtras);
+            // this.router.navigate(['main'], navigationExtras);
+            this.router.navigate(['main']);
           } else {
             this._message.create("error", "账号或密码错误");
             this.resetForm();

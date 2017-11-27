@@ -1,0 +1,11 @@
+.flex-warpper{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  height: 70%;
+  align-items: baseline;
+}
+
+.wrapper{
+  max-width: 400px;
+  margin: auto;
+}

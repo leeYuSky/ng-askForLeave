@@ -1,0 +1,32 @@
+<div class="flex-warpper">
+  <div class="wrapper">
+    <nz-card  [nzBordered]="false">
+      <ng-template #title>
+        <div style="text-align: center">
+          <h1>404</h1>
+        </div>
+      </ng-template>
+      <ng-template #body>
+        <h3 style="text-align: center">We couldn't find this page.</h3>
+        <p style="text-align: center">The page you are looking for does not exists.</p>
+        <div style="margin: 15px 0">
+          <nz-input [nzType]="'search'" [nzPlaceHolder]="'try with search'"></nz-input>
+        </div>
+        <div style="text-align: center">
+        <nz-breadcrumb nzSeparator="|" >
+          <nz-breadcrumb-item *ngIf="this.checkUserService.isLogin">
+            <a class="text-muted" [routerLink]="'/main'">Go Home</a>
+          </nz-breadcrumb-item>
+          <nz-breadcrumb-item *ngIf="!this.checkUserService.isLogin">
+            <a class="text-muted">Register</a>
+          </nz-breadcrumb-item>
+          <nz-breadcrumb-item *ngIf="!this.checkUserService.isLogin">
+            <a class="text-muted" [routerLink]="'/login'">Login</a>
+          </nz-breadcrumb-item>
+        </nz-breadcrumb>
+        </div>
+      </ng-template>
+    </nz-card>
+  </div>
+</div>
+
