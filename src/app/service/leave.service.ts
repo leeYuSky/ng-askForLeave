@@ -21,19 +21,19 @@ export class LeaveService implements OnInit{
 
   public login(username, password){
     const loginInfo = new HttpParams().set("username", username).set("password", password);
-    return this.http.post('http://localhost:8081/leave/auth/login', loginInfo, httpOptions);
+    return this.http.post('http://localhost:8080/leave/auth/login', loginInfo, httpOptions);
   }
 
   // 必须添加httpOptions, 否则会导致登出时的http请求不添加 cookie, 造成无法传输sessionId
   // 造成原因未明
   public logout(){
     const logoutInfo = new HttpParams();
-    return this.http.post('http://localhost:8081/leave/auth/logout', logoutInfo, httpOptions);
+    return this.http.post('http://localhost:8080/leave/auth/logout', logoutInfo, httpOptions);
   }
 
   public getUserInfo(username){
     const loginInfo = new HttpParams().set("username", username);
-    return this.http.post('http://localhost:8081/leave/apply/info', loginInfo, httpOptions);
+    return this.http.post('http://localhost:8080/leave/apply/info', loginInfo, httpOptions);
   }
 
   public addLeave (params){
@@ -44,12 +44,12 @@ export class LeaveService implements OnInit{
     queryString = queryString.substr(0, queryString.length - 1);
     // console.log(queryString);
     const addInfo = new HttpParams({fromString : queryString});
-    return this.http.post("http://localhost:8081/leave/apply/add", addInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/add", addInfo, httpOptions);
   }
 
   public deleteLeave(id){
     const deleteInfo = new HttpParams().set("id", id);
-    return this.http.post('http://localhost:8081/leave/apply/delete', deleteInfo, httpOptions);
+    return this.http.post('http://localhost:8080/leave/apply/delete', deleteInfo, httpOptions);
   }
 
   public updateLeave(params){
@@ -59,7 +59,7 @@ export class LeaveService implements OnInit{
     }
     queryString = queryString.substr(0, queryString.length - 1);
     const updateInfo = new HttpParams({fromString : queryString});
-    return this.http.post("http://localhost:8081/leave/apply/modify", updateInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/modify", updateInfo, httpOptions);
   }
 
   public getLeaveDraft(username, pageIndex = 1, pageSize = 10){
@@ -67,7 +67,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/apply/draftList", getLeaveDraftInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/draftList", getLeaveDraftInfo, httpOptions);
   }
 
   public getLeaveDone(username, pageIndex = 1, pageSize = 10){
@@ -75,7 +75,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/apply/publishList", getLeaveDoneInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/publishList", getLeaveDoneInfo, httpOptions);
   }
 
   public getOvertimeDeaft(username, pageIndex = 1, pageSize = 10){
@@ -83,7 +83,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/apply/overtimeDraftList", getLeaveDraftInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/overtimeDraftList", getLeaveDraftInfo, httpOptions);
   }
 
   public getOvertimeDone(username, pageIndex = 1, pageSize = 10){
@@ -91,7 +91,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/apply/overtimePublishList", getLeaveDraftInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/apply/overtimePublishList", getLeaveDraftInfo, httpOptions);
   }
 
   public getReviewTodoList(username, pageIndex = 1, pageSize = 10){
@@ -99,7 +99,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/review/todoList", getReviewTodoListInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/review/todoList", getReviewTodoListInfo, httpOptions);
   }
 
   public getReviewDoneList(username, pageIndex = 1, pageSize = 10){
@@ -107,7 +107,7 @@ export class LeaveService implements OnInit{
       .set("username", username)
       .set("page", pageIndex.toString())
       .set("pageSize", pageSize.toString());
-    return this.http.post("http://localhost:8081/leave/review/doneList", getReviewDoneListInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/review/doneList", getReviewDoneListInfo, httpOptions);
   }
 
   public updateReviewLeave(params){
@@ -117,7 +117,7 @@ export class LeaveService implements OnInit{
     }
     queryString = queryString.substr(0, queryString.length - 1);
     const updateInfo = new HttpParams({fromString : queryString});
-    return this.http.post("http://localhost:8081/leave/review/action", updateInfo, httpOptions);
+    return this.http.post("http://localhost:8080/leave/review/action", updateInfo, httpOptions);
   }
 
 }
