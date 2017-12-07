@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 
+
+
 @Injectable()
 export class CheckUserService {
 
   isLogin = false;
   current_user;
 
-  constructor() { }
+  constructor() {
+  }
 
   login(username){
     this.current_user = username;

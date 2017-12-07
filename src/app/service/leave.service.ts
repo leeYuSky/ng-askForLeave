@@ -19,6 +19,11 @@ export class LeaveService implements OnInit{
   ngOnInit(): void {
   }
 
+  public isLogin(){
+    const isloginInfo = new HttpParams();
+    return this.http.post('http://localhost:8080/leave/auth/islogin', isloginInfo, httpOptions);
+  }
+
   public login(username, password){
     const loginInfo = new HttpParams().set("username", username).set("password", password);
     return this.http.post('http://localhost:8080/leave/auth/login', loginInfo, httpOptions);
